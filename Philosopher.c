@@ -32,27 +32,23 @@ void test(i)
 {
   if (state[i] == HUNGRY && state[LEFT] != EATING && state[RIGHT] != EATING)
   {
-    state[i] = EATING;
-    // sem_post(&s[i]);
+    state[i] = EATING;    
   }
 }
 
 void take_forks(int i)
-{
-  // sem_wait(&mutex);
+{  
   state[i] = HUNGRY;
-  test(i);
-  // sem_post(&mutex);
-  // sem_wait(&s[i]);
+  test(i);  
 }
 
 void put_forks(i)
 {
-  // sem_wait(&mutex);
+  
   state[i] = THINKING;
   test(LEFT);
   test(RIGHT);
-  // sem_post(&mutex);
+  
 }
 
 void philosopher(void *i)
@@ -74,12 +70,7 @@ int main()
   int phils[N];
   int i;
   pthread_t thread_id[N];
-  // sem_init(&mutex, 0, 1);
-
-  // for (i = 0; i < N; i++)
-  // {
-  //   sem_init(&s[i], 0, 0);
-  // }
+  
 
   for (i = 0; i < N; i++)
   {
