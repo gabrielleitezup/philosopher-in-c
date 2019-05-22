@@ -33,7 +33,7 @@ void test(i)
   if (state[i] == HUNGRY && state[LEFT] != EATING && state[RIGHT] != EATING)
   {
     state[i] = EATING;
-    sem_post(&s[i]);
+    // sem_post(&s[i]);
   }
 }
 
@@ -74,12 +74,12 @@ int main()
   int phils[N];
   int i;
   pthread_t thread_id[N];
-  sem_init(&mutex, 0, 1);
+  // sem_init(&mutex, 0, 1);
 
-  for (i = 0; i < N; i++)
-  {
-    sem_init(&s[i], 0, 0);
-  }
+  // for (i = 0; i < N; i++)
+  // {
+  //   sem_init(&s[i], 0, 0);
+  // }
 
   for (i = 0; i < N; i++)
   {
