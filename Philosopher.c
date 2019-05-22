@@ -39,20 +39,20 @@ void test(i)
 
 void take_forks(int i)
 {
-  sem_wait(&mutex);
+  // sem_wait(&mutex);
   state[i] = HUNGRY;
   test(i);
-  sem_post(&mutex);
-  sem_wait(&s[i]);
+  // sem_post(&mutex);
+  // sem_wait(&s[i]);
 }
 
 void put_forks(i)
 {
-  sem_wait(&mutex);
+  // sem_wait(&mutex);
   state[i] = THINKING;
   test(LEFT);
   test(RIGHT);
-  sem_post(&mutex);
+  // sem_post(&mutex);
 }
 
 void philosopher(void *i)
