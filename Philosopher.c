@@ -15,26 +15,24 @@ int state[N];
 sem_t mutex;
 sem_t s[N];
 
-// semaphore mutex = 1;
-// semaphore s[N];
-
-void eat()
+void eat(int i)
 {
-  // printf("O filósofo está comendo.\n");
+  printf("O filósofo %d está comendo.\n", i);
   sleep(rand() % 3 + 1);
+  printf("O filósofo %d terminou de comer.\n", i);
 }
 
-void think()
+void think(int i)
 {
-  // printf("O filósofo está pensando.\n");
+  printf("O filósofo %d está pensando.\n", i);
   sleep(rand() % 3 + 1);
+  printf("O filósofo %d terminou de pensar.\n", i);
 }
 void test(i)
-{   
+{
   if (state[i] == HUNGRY && state[LEFT] != EATING && state[RIGHT] != EATING)
   {
     state[i] = EATING;
-    printf("Filosofo %d esta comendo \n", i + 1);
     sem_post(&s[i]);
   }
 }
@@ -42,30 +40,30 @@ void test(i)
 void take_forks(int i)
 {
   sem_wait(&mutex);
-  state[i] = HUNGRY; 
+  state[i] = HUNGRY;
   test(i);
   sem_post(&mutex);
-  sem_wait(&(s[i]));
+  sem_wait(&s[i]);
 }
 
 void put_forks(i)
 {
   sem_wait(&mutex);
   state[i] = THINKING;
-  printf("Filosofo %d esta pensando \n",i+1);
   test(LEFT);
   test(RIGHT);
   sem_post(&mutex);
 }
 
-void philosopher(int i)
+void philosopher(void *i)
 {
+  int *phil = (int *)i;
   while (1)
   {
-    think();
-    take_forks(i);
-    eat();
-    put_forks(i);    
+    think(*phil);
+    take_forks(*phil);
+    eat(*phil);
+    put_forks(*phil);
   }
 
   pthread_exit((void *)0);
@@ -85,13 +83,12 @@ int main()
 
   for (i = 0; i < N; i++)
   {
+    phils[i] = i;
     pthread_create(&thread_id[i], NULL, (void *)philosopher, &phils[i]);
-    printf("Philosopher %d is thinking\n", i + 1);
   }
 
   for (i = 0; i < N; i++)
-  {    
+  {
     pthread_join(thread_id[i], NULL);
   }
-
 }
